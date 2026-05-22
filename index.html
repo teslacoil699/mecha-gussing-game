@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gundam API Gallery</title>
+    <style>
+        .card { border: 1px solid #ccc; padding: 10px; margin: 10px; display: inline-block; width: 200px; text-align: center; }
+        img { width: 100%; height: auto; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Mobile Suit Gallery</h1>
+    <div id="gallery">Loading Gundams...</div>
+
+    <script>
+        const GIST_URL = 'https://githubusercontent.com';
+
+        async function loadGundams() {
+            try {
+                const response = await fetch(GIST_URL);
+                const data = await response.json();
+                
+                const gallery = document.getElementById('gallery');
+                gallery.innerHTML = ''; // Clear loading text
+
+                data.gundams.forEach(ms => {
+                    const card = `
+                        <div class="card">
+                            <img src="${ms.image}" alt="${ms.name}">
+                            <h3>${ms.name}</h3>
+                            <p>Pilot: ${ms.pilot}</p>
+                        </div>
+                    `;
+                    gallery.innerHTML += card;
+                });
+            } catch (error) {
+                document.getElementById('gallery').innerHTML = "Failed to load data.";
+                console.error(error);
+            }
+        }
+
+        loadGundams();
+    </script>
+</body>
+</html>
