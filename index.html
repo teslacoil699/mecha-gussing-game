@@ -1,45 +1,138 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Gundam API Gallery</title>
-    <style>
-        .card { border: 1px solid #ccc; padding: 10px; margin: 10px; display: inline-block; width: 200px; text-align: center; }
-        img { width: 100%; height: auto; border-radius: 5px; }
-    </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gundam Hub</title>
+    <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="#home">GUNDAM HUB</a>
+            <nav class="main-nav">
+                <a href="#home">Home</a>
+                <a href="#featured">Mobile Suits</a>
+                <a href="#series">Series</a>
+                <a href="#gallery">Gallery</a>
+                <a href="#about">About</a>
+            </nav>
+        </div>
+    </header>
 
-    <h1>Mobile Suit Gallery</h1>
-    <div id="gallery">Loading Gundams...</div>
+    <main>
+        <section id="home" class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="container hero-content">
+                <span class="eyebrow">Explore the legendary universe</span>
+                <h1>Discover the World of Gundam</h1>
+                <p>Browse iconic mobile suits, series lore, gallery highlights, and the future of sci-fi mecha.</p>
+                <a class="btn btn-primary" href="#featured">Explore Collection</a>
+            </div>
+        </section>
 
-    <script>
-        const GIST_URL = 'https://githubusercontent.com';
+        <section class="search-section container">
+            <div class="search-card">
+                <div class="search-input">
+                    <label for="search">Search Gundam Name</label>
+                    <input id="search" type="text" placeholder="RX-78-2, Wing Zero, Barbatos..." />
+                </div>
+                <div class="search-select">
+                    <label for="filter">Series Filter</label>
+                    <select id="filter">
+                        <option>All Series</option>
+                        <option>Mobile Suit Gundam</option>
+                        <option>Gundam Wing</option>
+                        <option>Iron-Blooded Orphans</option>
+                        <option>Unicorn</option>
+                        <option>Seed</option>
+                    </select>
+                </div>
+            </div>
+        </section>
 
-        async function loadGundams() {
-            try {
-                const response = await fetch(GIST_URL);
-                const data = await response.json();
-                
-                const gallery = document.getElementById('gallery');
-                gallery.innerHTML = ''; // Clear loading text
+        <section id="featured" class="featured-section container">
+            <div class="section-header">
+                <span>Featured Gundams</span>
+                <h2>Iconic mobile suits from every era</h2>
+            </div>
+            <div class="card-grid">
+                <article class="featured-card">
+                    <div class="card-image rx78"></div>
+                    <div class="card-body">
+                        <h3>RX-78-2 Gundam</h3>
+                        <p>Original Mobile Suit Gundam</p>
+                        <a class="btn btn-secondary" href="#gallery">View Details</a>
+                    </div>
+                </article>
+                <article class="featured-card">
+                    <div class="card-image wing-zero"></div>
+                    <div class="card-body">
+                        <h3>Wing Gundam Zero</h3>
+                        <p>Gundam Wing Series</p>
+                        <a class="btn btn-secondary" href="#gallery">View Details</a>
+                    </div>
+                </article>
+                <article class="featured-card">
+                    <div class="card-image barbatos"></div>
+                    <div class="card-body">
+                        <h3>Barbatos</h3>
+                        <p>Iron-Blooded Orphans</p>
+                        <a class="btn btn-secondary" href="#gallery">View Details</a>
+                    </div>
+                </article>
+            </div>
+        </section>
 
-                data.gundams.forEach(ms => {
-                    const card = `
-                        <div class="card">
-                            <img src="${ms.image}" alt="${ms.name}">
-                            <h3>${ms.name}</h3>
-                            <p>Pilot: ${ms.pilot}</p>
-                        </div>
-                    `;
-                    gallery.innerHTML += card;
-                });
-            } catch (error) {
-                document.getElementById('gallery').innerHTML = "Failed to load data.";
-                console.error(error);
-            }
-        }
+        <section id="gallery" class="gallery-section container">
+            <div class="section-header">
+                <span>Gallery</span>
+                <h2>A closer look at the mobile suit universe</h2>
+            </div>
+            <div class="gallery-grid">
+                <div class="gallery-card"></div>
+                <div class="gallery-card"></div>
+                <div class="gallery-card"></div>
+                <div class="gallery-card"></div>
+                <div class="gallery-card"></div>
+                <div class="gallery-card"></div>
+                <div class="gallery-card"></div>
+                <div class="gallery-card"></div>
+            </div>
+        </section>
 
-        loadGundams();
-    </script>
+        <section id="about" class="about-section">
+            <div class="container about-content">
+                <div>
+                    <span class="eyebrow">About Gundam</span>
+                    <h2>Science fiction, giant robots, and timeless adventure</h2>
+                    <p>Gundam is a landmark franchise centered around massive humanoid machines called mobile suits. It blends futuristic technology, compelling pilots, and political conflict into a cinematic universe of high-stakes storytelling.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <h3>Contact</h3>
+                <p>hello@gundamhub.com</p>
+            </div>
+            <div>
+                <h3>Social</h3>
+                <p>Twitter • Instagram • Discord</p>
+            </div>
+            <div>
+                <h3>Credits</h3>
+                <p>Design inspired by Gundam aesthetics</p>
+            </div>
+            <div>
+                <h3>Copyright</h3>
+                <p>© 2026 Gundam Hub</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
