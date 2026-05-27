@@ -244,18 +244,6 @@ img {
   background-position: center;
 }
 
-.card-image.rx78 {
-  background-image: linear-gradient(180deg, rgba(5,7,12,0.1), rgba(5,7,12,0.8)), url('https://via.placeholder.com/600x400/0d1f2f/ffffff?text=RX-78-2');
-}
-
-.card-image.wing-zero {
-  background-image: linear-gradient(180deg, rgba(5,7,12,0.1), rgba(5,7,12,0.8)), url('https://via.placeholder.com/600x400/1b2332/ffffff?text=Wing+Zero');
-}
-
-.card-image.barbatos {
-  background-image: linear-gradient(180deg, rgba(5,7,12,0.1), rgba(5,7,12,0.8)), url('https://via.placeholder.com/600x400/2c2824/ffffff?text=Barbatos');
-}
-
 .card-body {
   padding: 1.5rem;
   display: grid;
@@ -284,38 +272,9 @@ img {
   border: 1px solid var(--border);
   overflow: hidden;
   position: relative;
+  background-size: cover;
+  background-position: center;
 }
-
-.gallery-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: linear-gradient(180deg, rgba(74,144,226,0.18), transparent 30%),
-                    radial-gradient(circle at top left, rgba(231,76,60,0.12), transparent 25%);
-}
-
-.gallery-card:nth-child(1)::after,
-.gallery-card:nth-child(2)::after,
-.gallery-card:nth-child(3)::after,
-.gallery-card:nth-child(4)::after,
-.gallery-card:nth-child(5)::after,
-.gallery-card:nth-child(6)::after,
-.gallery-card:nth-child(7)::after,
-.gallery-card:nth-child(8)::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('https://via.placeholder.com/600x400/0f1929/ffffff?text=Gundam') center/cover no-repeat;
-  opacity: 0.4;
-}
-
-.gallery-card:nth-child(2)::after { background-image: url('https://via.placeholder.com/600x400/16212d/ffffff?text=Suit+2'); }
-.gallery-card:nth-child(3)::after { background-image: url('https://via.placeholder.com/600x400/1f2a39/ffffff?text=Suit+3'); }
-.gallery-card:nth-child(4)::after { background-image: url('https://via.placeholder.com/600x400/0a1420/ffffff?text=Suit+4'); }
-.gallery-card:nth-child(5)::after { background-image: url('https://via.placeholder.com/600x400/192235/ffffff?text=Suit+5'); }
-.gallery-card:nth-child(6)::after { background-image: url('https://via.placeholder.com/600x400/111a27/ffffff?text=Suit+6'); }
-.gallery-card:nth-child(7)::after { background-image: url('https://via.placeholder.com/600x400/152032/ffffff?text=Suit+7'); }
-.gallery-card:nth-child(8)::after { background-image: url('https://via.placeholder.com/600x400/0e1a27/ffffff?text=Suit+8'); }
 
 .about-section {
   background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0));
