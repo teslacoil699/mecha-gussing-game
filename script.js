@@ -1,10 +1,12 @@
 // Main JavaScript file
 
+const API_URL = 'gundams.json';
+const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/600x400/111a27/ffffff?text=No+Image';
 let allGundams = [];
 let displayedGundams = [];
 
 // Featured Gundam indices
-const featuredIndices = [0, 1, 2]; // RX-78-2, Wing Zero, Barbatos
+const featuredIndices = [0, 1, 2];
 
 // Initialize page
 window.addEventListener('DOMContentLoaded', () => {
@@ -26,20 +28,35 @@ function setupExploreButton() {
 
 async function loadGundamsData() {
   try {
-    const response = await fetch('/gundams.json');
+    const response = await fetch(API_URL);
     const data = await response.json();
     
-    allGundams = data.gundams;
-    displayedGundams = data.gundams;
+    if (Array.isArray(data)) {
+      allGundams = data;
+    } else if (data && Array.isArray(data.gundams)) {
+      allGundams = data.gundams;
+    } else if (data && typeof data === 'object') {
+      allGundams = Object.values(data).flat();
+    } else {
+      allGundams = [];
+    }
     
-    loadFeaturedGundams();
-    loadGallery();
+    displayedGundams = allGundams;
+    
+    await loadFeaturedGundams();
+    await loadGallery();
     setupSearch();
   } catch (error) {
     console.error('Error loading gundams data:', error);
-    document.querySelector('.card-grid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #e74c3c;">Failed to load data</p>';
-    document.querySelector('.gallery-grid').innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #e74c3c;">Failed to load gallery</p>';
+    const cardGrid = document.querySelector('.card-grid');
+    const galleryGrid = document.querySelector('.gallery-grid');
+    if (cardGrid) cardGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #e74c3c;">Failed to load data</p>';
+    if (galleryGrid) galleryGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #e74c3c;">Failed to load gallery</p>';
   }
+}
+
+function resolveImageUrl(url) {
+  return url && typeof url === 'string' && url.trim().length > 0 ? url : PLACEHOLDER_IMAGE;
 }
 
 function loadFeaturedGundams() {
@@ -48,27 +65,42 @@ function loadFeaturedGundams() {
   
   const featured = featuredIndices.map(i => allGundams[i]).filter(Boolean);
   
-  const cardsHtml = featured.map(gundam => `
-    <article class="featured-card">
-      <div class="card-image" style="background-image: linear-gradient(180deg, rgba(5,7,12,0.1), rgba(5,7,12,0.8)), url('${gundam.image}'); background-size: cover; background-position: center;"></div>
-      <div class="card-body">
-        <h3>${gundam.name}</h3>
-        <p>${gundam.series}</p>
-        <a class="btn btn-secondary" href="#gallery">View Details</a>
-      </div>
-    </article>
-  `).join('');
+  const cardsHtml = featured.map(gundam => {
+    const imageUrl = resolveImageUrl(gundam.image);
+    const title = gundam.title || gundam.name || 'Unknown Gundam';
+    const series = gundam.series || gundam.title || 'Gundam Series';
+    
+    return `
+      <article class="featured-card">
+        <div class="card-image">
+          <img src="${imageUrl}" alt="${title}" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />
+        </div>
+        <div class="card-body">
+          <h3>${title}</h3>
+          <p>${series}</p>
+          <a class="btn btn-secondary" href="#gallery">View Details</a>
+        </div>
+      </article>
+    `;
+  }).join('');
   
   featuredGrid.innerHTML = cardsHtml;
 }
 
-function loadGallery() {
+async function loadGallery() {
   const galleryGrid = document.querySelector('.gallery-grid');
   if (!galleryGrid || allGundams.length === 0) return;
   
-  const galleryHtml = allGundams.slice(0, 8).map(gundam => `
-    <div class="gallery-card" style="background-image: url('${gundam.image}'); background-size: cover; background-position: center;" title="${gundam.name}"></div>
-  `).join('');
+  const galleryHtml = allGundams.slice(0, 8).map(gundam => {
+    const imageUrl = resolveImageUrl(gundam.image);
+    const title = gundam.title || gundam.name || 'Gundam Image';
+    
+    return `
+      <div class="gallery-card" title="${title}">
+        <img src="${imageUrl}" alt="${title}" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />
+      </div>
+    `;
+  }).join('');
   
   galleryGrid.innerHTML = galleryHtml;
 }
@@ -100,8 +132,9 @@ function filterGallery() {
   
   if (searchTerm) {
     filtered = filtered.filter(gundam => 
-      gundam.name?.toLowerCase().includes(searchTerm) ||
-      gundam.series?.toLowerCase().includes(searchTerm)
+      (gundam.title || gundam.name || '').toLowerCase().includes(searchTerm) ||
+      (gundam.series || '').toLowerCase().includes(searchTerm) ||
+      (gundam.info_text || '').toLowerCase().includes(searchTerm)
     );
   }
   
@@ -110,9 +143,16 @@ function filterGallery() {
   if (displayedGundams.length === 0) {
     galleryGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: #98a8c6; padding: 2rem;">No results found</p>';
   } else {
-    const galleryHtml = displayedGundams.map(gundam => `
-      <div class="gallery-card" style="background-image: url('${gundam.image}'); background-size: cover; background-position: center;" title="${gundam.name}"></div>
-    `).join('');
+    const galleryHtml = displayedGundams.map(gundam => {
+      const imageUrl = resolveImageUrl(gundam.image);
+      const title = gundam.title || gundam.name || 'Gundam Image';
+      
+      return `
+        <div class="gallery-card" title="${title}">
+          <img src="${imageUrl}" alt="${title}" onerror="this.onerror=null;this.src='${PLACEHOLDER_IMAGE}';" />
+        </div>
+      `;
+    }).join('');
     
     galleryGrid.innerHTML = galleryHtml;
   }
