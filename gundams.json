@@ -7,7 +7,7 @@
       "year": 1979,
       "pilot": "Amuro Ray",
       "description": "The legendary mobile suit that started it all",
-      "image": "https://images.unsplash.com/photo-1605868657960-ff5e3d7d0b9a?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=RX-78-2+Gundam"
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "year": 1995,
       "pilot": "Heero Yuy",
       "description": "The perfect mobile suit from the future",
-      "image": "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Wing+Gundam+Zero"
     },
     {
       "id": 3,
@@ -25,7 +25,7 @@
       "year": 2015,
       "pilot": "Mikazuki Augus",
       "description": "A powerful mobile suit with a brutal combat style",
-      "image": "https://images.unsplash.com/photo-1578605269175-5f2b9e3e0f3f?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Barbatos"
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "year": 2002,
       "pilot": "Kira Yamato",
       "description": "A modular mobile suit with multiple loadouts",
-      "image": "https://images.unsplash.com/photo-1511379938547-c1f69b13d835?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Strike+Gundam"
     },
     {
       "id": 5,
@@ -43,7 +43,7 @@
       "year": 2010,
       "pilot": "Banagher Links",
       "description": "A Newtype-responsive mobile suit with psychoframe technology",
-      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Unicorn+Gundam"
     },
     {
       "id": 6,
@@ -52,7 +52,7 @@
       "year": 2007,
       "pilot": "Setsuna F. Seiei",
       "description": "A sleek mobile suit designed for precision combat",
-      "image": "https://images.unsplash.com/photo-1549887534-f555a50b2156?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Exia"
     },
     {
       "id": 7,
@@ -61,7 +61,7 @@
       "year": 1994,
       "pilot": "Tobias Monroe",
       "description": "A distinctive mobile suit with iconic skull emblem",
-      "image": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Crossbone+Gundam"
     },
     {
       "id": 8,
@@ -70,7 +70,7 @@
       "year": 1988,
       "pilot": "Char Aznable",
       "description": "The ultimate mobile suit of the Principality of Zeon",
-      "image": "https://images.unsplash.com/photo-1605868657960-ff5e3d7d0b9a?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Sazabi"
     },
     {
       "id": 9,
@@ -79,7 +79,7 @@
       "year": 2004,
       "pilot": "Kira Yamato",
       "description": "An advanced mobile suit with extraordinary firepower",
-      "image": "https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Freedom+Gundam"
     },
     {
       "id": 10,
@@ -88,7 +88,7 @@
       "year": 2016,
       "pilot": "Mikazuki Augus",
       "description": "The evolved form of the Barbatos",
-      "image": "https://images.unsplash.com/photo-1578605269175-5f2b9e3e0f3f?w=600&h=400&fit=crop"
+      "image": "https://placehold.co/600x400/111a27/ffffff?text=Barbatos+Lupus"
     }
   ]
 }

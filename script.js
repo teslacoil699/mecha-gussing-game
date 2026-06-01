@@ -1,7 +1,7 @@
 // Main JavaScript file
 
-const API_URL = 'gundams.json';
-const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/600x400/111a27/ffffff?text=No+Image';
+const API_URL = './gundams.json';
+const PLACEHOLDER_IMAGE = 'https://placehold.co/600x400/111a27/ffffff?text=No+Image';
 let allGundams = [];
 let displayedGundams = [];
 
@@ -11,6 +11,7 @@ const featuredIndices = [0, 1, 2];
 // Initialize page
 window.addEventListener('DOMContentLoaded', () => {
   loadGundamsData();
+  console.log("data loading initiated");
   setupExploreButton();
 });
 
@@ -28,7 +29,11 @@ function setupExploreButton() {
 
 async function loadGundamsData() {
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch(API_URL, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Failed to load ${API_URL}: ${response.status} ${response.statusText}`);
+    }
+
     const data = await response.json();
     
     if (Array.isArray(data)) {
