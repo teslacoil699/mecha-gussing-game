@@ -7,7 +7,7 @@
       "year": 1979,
       "pilot": "Amuro Ray",
       "description": "The legendary mobile suit that started it all",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=RX-78-2+Gundam"
+      "image": "https://static.wikia.nocookie.net/gundam/images/d/d9/RX-78-02_Origin.png/revision/latest?cb=20250217195429"
     },
     {
       "id": 2,
@@ -16,7 +16,7 @@
       "year": 1995,
       "pilot": "Heero Yuy",
       "description": "The perfect mobile suit from the future",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Wing+Gundam+Zero"
+      "image": "https://static.wikia.nocookie.net/gundam/images/5/59/Wing_Zero_TV_Front_%28Official%29.png/revision/latest?cb=20251010041724"
     },
     {
       "id": 3,
@@ -25,7 +25,7 @@
       "year": 2015,
       "pilot": "Mikazuki Augus",
       "description": "A powerful mobile suit with a brutal combat style",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Barbatos"
+      "image": "https://static.wikia.nocookie.net/gundam/images/8/8e/ASW-G-08_Gundam_Barbatos_1st_Form_%28Front%29.png/revision/latest?cb=20181007005623"
     },
     {
       "id": 4,
@@ -34,7 +34,7 @@
       "year": 2002,
       "pilot": "Kira Yamato",
       "description": "A modular mobile suit with multiple loadouts",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Strike+Gundam"
+      "image": "https://static.wikia.nocookie.net/gundam/images/e/ea/Strike_gundam_front_lineart_color.png/revision/latest?cb=20251012205232"
     },
     {
       "id": 5,
@@ -43,7 +43,7 @@
       "year": 2010,
       "pilot": "Banagher Links",
       "description": "A Newtype-responsive mobile suit with psychoframe technology",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Unicorn+Gundam"
+      "image": "https://static.wikia.nocookie.net/gundam/images/7/7b/Unicorn_Gundam_Destroy_Mode_front.png/revision/latest?cb=20251208021522"
     },
     {
       "id": 6,
@@ -52,7 +52,7 @@
       "year": 2007,
       "pilot": "Setsuna F. Seiei",
       "description": "A sleek mobile suit designed for precision combat",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Exia"
+      "image": "https://static.wikia.nocookie.net/gundam/images/d/d9/GN-001_%28Front%29.png/revision/latest?cb=20210804123915"
     },
     {
       "id": 7,
@@ -61,7 +61,7 @@
       "year": 1994,
       "pilot": "Tobias Monroe",
       "description": "A distinctive mobile suit with iconic skull emblem",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Crossbone+Gundam"
+      "image": "https://static.wikia.nocookie.net/gundam/images/b/b3/XM-X1_Crossbone_Gundam_X-1_Front.png/revision/latest?cb=20190827123805"
     },
     {
       "id": 8,
@@ -70,7 +70,7 @@
       "year": 1988,
       "pilot": "Char Aznable",
       "description": "The ultimate mobile suit of the Principality of Zeon",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Sazabi"
+      "image": "https://static.wikia.nocookie.net/gundam/images/b/b8/MSN-04_Sazabi_-_Front.png/revision/latest?cb=20171001171810"
     },
     {
       "id": 9,
@@ -79,7 +79,7 @@
       "year": 2004,
       "pilot": "Kira Yamato",
       "description": "An advanced mobile suit with extraordinary firepower",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Freedom+Gundam"
+      "image": "https://static.wikia.nocookie.net/gundam/images/d/d1/Freedom_gundam_front_lineart_color.png/revision/latest?cb=20260103063443"
     },
     {
       "id": 10,
@@ -88,7 +88,7 @@
       "year": 2016,
       "pilot": "Mikazuki Augus",
       "description": "The evolved form of the Barbatos",
-      "image": "https://placehold.co/600x400/111a27/ffffff?text=Barbatos+Lupus"
+      "image": "https://static.wikia.nocookie.net/gundam/images/5/5d/Barbatos_Lupus_Front_%28Official%29.png/revision/latest?cb=20251010043617"
     }
   ]
 }
