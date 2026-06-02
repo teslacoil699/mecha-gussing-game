@@ -18,6 +18,71 @@
 }
 
 /* ============================================================================
+   MODE SELECTION SCREEN
+   ============================================================================ */
+
+.mode-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 3rem;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.mode-card h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.mode-card .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.mode-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.mode-btn {
+    padding: 2rem 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text);
+    font-family: inherit;
+    text-align: center;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--accent-2);
+    transform: translateY(-2px);
+}
+
+.mode-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.mode-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.mode-desc {
+    font-size: 0.85rem;
+    color: var(--muted);
+}
+
+/* ============================================================================
    SETUP SCREEN - PLAYER NAME ENTRY
    ============================================================================ */
 
@@ -454,6 +519,10 @@
    ============================================================================ */
 
 @media (max-width: 768px) {
+    .mode-buttons {
+        grid-template-columns: 1fr;
+    }
+
     .game-header {
         flex-direction: column;
         gap: 1.5rem;
@@ -481,6 +550,10 @@
     }
 
     .setup-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .mode-card {
         padding: 2rem 1.5rem;
     }
 }

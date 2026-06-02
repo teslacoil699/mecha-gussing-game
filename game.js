@@ -8,7 +8,8 @@ let allGundams = [];
 // ============================================================================
 
 const gameState = {
-    currentScreen: 'setup', // setup | playing | turnBarrier | results | leaderboard
+    currentScreen: 'modeSelect', // modeSelect | setup | playing | turnBarrier | results | leaderboard
+    gameMode: null, // 'singlePlayer' | 'multiplayer'
     currentPlayer: 'P1',
     players: {
         P1: { name: '', score: 0, currentRound: 0 },
@@ -61,6 +62,18 @@ async function loadGundamsData() {
 // ============================================================================
 
 function setupEventListeners() {
+    // Mode selection buttons
+    const btnSinglePlayer = document.querySelector('#btn-single-player');
+    const btnMultiplayer = document.querySelector('#btn-multiplayer');
+    
+    if (btnSinglePlayer) {
+        btnSinglePlayer.addEventListener('click', () => handleModeSelect('singlePlayer'));
+    }
+    
+    if (btnMultiplayer) {
+        btnMultiplayer.addEventListener('click', () => handleModeSelect('multiplayer'));
+    }
+
     // Setup form
     const setupForm = document.querySelector('#setup-form');
     if (setupForm) {
@@ -115,24 +128,53 @@ function showScreen(screenName) {
 // SETUP SCREEN - PLAYER NAME ENTRY
 // ============================================================================
 
+function handleModeSelect(mode) {
+    gameState.gameMode = mode;
+
+    // Update setup form based on mode
+    const setupTitle = document.querySelector('#setup-title');
+    const setupSubtitle = document.querySelector('#setup-subtitle');
+    const player2Group = document.querySelector('#player2-group');
+    const player2Input = document.querySelector('#player2-name');
+
+    if (mode === 'singlePlayer') {
+        setupTitle.textContent = 'Single Player Game';
+        setupSubtitle.textContent = 'Enter your name';
+        player2Group.style.display = 'none';
+        player2Input.removeAttribute('required');
+    } else {
+        setupTitle.textContent = 'Multiplayer Game';
+        setupSubtitle.textContent = 'Enter both player names';
+        player2Group.style.display = 'block';
+        player2Input.setAttribute('required', '');
+    }
+
+    showScreen('setup');
+}
+
 function handleSetupSubmit(e) {
     e.preventDefault();
 
     const p1Name = document.querySelector('#player1-name').value.trim();
     const p2Name = document.querySelector('#player2-name').value.trim();
 
-    if (!p1Name || !p2Name) {
+    if (!p1Name) {
+        alert('Please enter your name');
+        return;
+    }
+
+    if (gameState.gameMode === 'multiplayer' && !p2Name) {
         alert('Please enter both player names');
         return;
     }
 
     // Initialize game
     gameState.players.P1.name = p1Name;
-    gameState.players.P2.name = p2Name;
+    gameState.players.P2.name = gameState.gameMode === 'singlePlayer' ? '' : p2Name;
     gameState.gameState = 'playing';
     gameState.currentPlayer = 'P1';
     gameState.players.P1.currentRound = 1;
-    gameState.players.P2.currentRound = 0;
+    gameState.players.P2.currentRound = gameState.gameMode === 'multiplayer' ? 0 : -1;
 
     // Initialize gundam pool
     initializeGundamPool();
@@ -279,10 +321,16 @@ function handleNextRound() {
         p1.currentRound += 1;
 
         if (p1.currentRound > gameState.totalRounds) {
-            // P1 finished, switch to P2
-            gameState.currentPlayer = 'P2';
-            p2.currentRound = 1;
-            showScreen('turnBarrier');
+            // P1 finished
+            if (gameState.gameMode === 'singlePlayer') {
+                // Single player mode: game over
+                endGame();
+            } else {
+                // Multiplayer mode: switch to P2
+                gameState.currentPlayer = 'P2';
+                p2.currentRound = 1;
+                showScreen('turnBarrier');
+            }
         } else {
             // Next round for P1
             startNewRound();
@@ -319,7 +367,9 @@ function endGame() {
 
     // Save high scores
     saveHighScore(p1.name, p1.score);
-    saveHighScore(p2.name, p2.score);
+    if (gameState.gameMode === 'multiplayer') {
+        saveHighScore(p2.name, p2.score);
+    }
 
     // Display results
     showResults(p1, p2);
@@ -333,7 +383,7 @@ function showResults(p1, p2) {
     document.querySelector('#result-p2-name').textContent = p2.name;
     document.querySelector('#result-p2-score').textContent = p2.score;
 
-    // Determine winner
+    // Determine winner or display single player result
     const resultWinner = document.querySelector('#result-winner');
     const resultP1Item = document.querySelector('#result-p1');
     const resultP2Item = document.querySelector('#result-p2');
@@ -342,17 +392,25 @@ function showResults(p1, p2) {
     resultP2Item.classList.remove('winner');
     resultWinner.classList.add('hidden');
 
-    if (p1.score > p2.score) {
+    if (gameState.gameMode === 'singlePlayer') {
+        // Single player mode: just show the score
         resultP1Item.classList.add('winner');
-        resultWinner.innerHTML = `<span class="winner-badge">Winner</span>`;
-        resultWinner.classList.remove('hidden');
-    } else if (p2.score > p1.score) {
-        resultP2Item.classList.add('winner');
-        resultWinner.innerHTML = `<span class="winner-badge">Winner</span>`;
+        resultWinner.innerHTML = `<span class="winner-badge">Final Score</span>`;
         resultWinner.classList.remove('hidden');
     } else {
-        resultWinner.innerHTML = `<span class="winner-badge">Tie</span>`;
-        resultWinner.classList.remove('hidden');
+        // Multiplayer mode: compare scores
+        if (p1.score > p2.score) {
+            resultP1Item.classList.add('winner');
+            resultWinner.innerHTML = `<span class="winner-badge">Winner</span>`;
+            resultWinner.classList.remove('hidden');
+        } else if (p2.score > p1.score) {
+            resultP2Item.classList.add('winner');
+            resultWinner.innerHTML = `<span class="winner-badge">Winner</span>`;
+            resultWinner.classList.remove('hidden');
+        } else {
+            resultWinner.innerHTML = `<span class="winner-badge">Tie</span>`;
+            resultWinner.classList.remove('hidden');
+        }
     }
 }
 

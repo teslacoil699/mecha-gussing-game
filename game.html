@@ -23,16 +23,40 @@
     </header>
 
     <main>
+        <!-- Screen 0: Mode Selection -->
+        <section id="screen-mode-select" class="game-screen active">
+            <div class="container game-container">
+                <div class="mode-card">
+                    <h1>Gundam Guessing Game</h1>
+                    <p class="subtitle">Choose your game mode</p>
+                    
+                    <div class="mode-buttons">
+                        <button class="mode-btn" id="btn-single-player" type="button">
+                            <div class="mode-icon">👤</div>
+                            <div class="mode-title">Single Player</div>
+                            <div class="mode-desc">Play 10 rounds solo</div>
+                        </button>
+                        
+                        <button class="mode-btn" id="btn-multiplayer" type="button">
+                            <div class="mode-icon">👥</div>
+                            <div class="mode-title">Multiplayer</div>
+                            <div class="mode-desc">Play against a friend (same device)</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Screen 1: Player Name Entry -->
-        <section id="screen-setup" class="game-screen active">
+        <section id="screen-setup" class="game-screen">
             <div class="container game-container">
                 <div class="setup-card">
-                    <h1>Gundam Guessing Game</h1>
-                    <p class="subtitle">Enter player names to begin</p>
+                    <h1 id="setup-title">Single Player Game</h1>
+                    <p class="subtitle" id="setup-subtitle">Enter your name</p>
                     
                     <form id="setup-form">
                         <div class="form-group">
-                            <label for="player1-name">Player 1 Name:</label>
+                            <label for="player1-name">Your Name:</label>
                             <input 
                                 type="text" 
                                 id="player1-name" 
@@ -42,13 +66,12 @@
                             />
                         </div>
                         
-                        <div class="form-group">
+                        <div class="form-group" id="player2-group" style="display: none;">
                             <label for="player2-name">Player 2 Name:</label>
                             <input 
                                 type="text" 
                                 id="player2-name" 
-                                placeholder="Enter your name" 
-                                required 
+                                placeholder="Enter their name" 
                                 maxlength="20"
                             />
                         </div>
