@@ -44,7 +44,7 @@
 
 .mode-buttons {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
 }
 
@@ -515,11 +515,76 @@
 }
 
 /* ============================================================================
+   NETWORK GAME SCREENS
+   ============================================================================ */
+
+.network-buttons {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.network-buttons .btn {
+    width: 100%;
+}
+
+.room-code-display {
+    background: rgba(74, 144, 226, 0.1);
+    border: 2px solid var(--accent-2);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.room-code {
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: 0.2em;
+    color: var(--accent-2);
+    font-family: 'Courier New', monospace;
+}
+
+.waiting-info {
+    color: var(--muted);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.network-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 12px;
+}
+
+.network-status {
+    font-size: 0.85rem;
+    color: #2ecc71;
+    font-weight: 600;
+    background: rgba(46, 204, 113, 0.1);
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+}
+
+.network-status.disconnected {
+    color: var(--accent);
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* ============================================================================
    RESPONSIVE DESIGN
    ============================================================================ */
 
 @media (max-width: 768px) {
     .mode-buttons {
+        grid-template-columns: 1fr;
+    }
+
+    .network-buttons {
         grid-template-columns: 1fr;
     }
 

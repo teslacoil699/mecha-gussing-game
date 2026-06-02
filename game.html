@@ -37,11 +37,159 @@
                             <div class="mode-desc">Play 10 rounds solo</div>
                         </button>
                         
-                        <button class="mode-btn" id="btn-multiplayer" type="button">
+                        <button class="mode-btn" id="btn-local-multiplayer" type="button">
                             <div class="mode-icon">👥</div>
-                            <div class="mode-title">Multiplayer</div>
-                            <div class="mode-desc">Play against a friend (same device)</div>
+                            <div class="mode-title">Local Multiplayer</div>
+                            <div class="mode-desc">Play on same device</div>
                         </button>
+
+                        <button class="mode-btn" id="btn-network-game" type="button">
+                            <div class="mode-icon">🌐</div>
+                            <div class="mode-title">Network Game</div>
+                            <div class="mode-desc">Play with friends online</div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen: Network Game - Create/Join Selection -->
+        <section id="screen-network-select" class="game-screen">
+            <div class="container game-container">
+                <div class="setup-card">
+                    <h1>Network Game</h1>
+                    <p class="subtitle">How do you want to play?</p>
+                    
+                    <div class="network-buttons">
+                        <button class="btn btn-primary" id="btn-create-game" type="button">
+                            Create a Game
+                        </button>
+                        <button class="btn btn-secondary" id="btn-join-game-form" type="button">
+                            Join a Game
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen: Network Game - Create Game -->
+        <section id="screen-create-game" class="game-screen">
+            <div class="container game-container">
+                <div class="setup-card">
+                    <h1>Create a Game</h1>
+                    <p class="subtitle">Enter your name</p>
+                    
+                    <form id="create-game-form">
+                        <div class="form-group">
+                            <label for="host-name">Your Name:</label>
+                            <input 
+                                type="text" 
+                                id="host-name" 
+                                placeholder="Enter your name" 
+                                required 
+                                maxlength="20"
+                            />
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Game</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen: Network Game - Waiting for Player -->
+        <section id="screen-waiting-player" class="game-screen">
+            <div class="container game-container">
+                <div class="setup-card">
+                    <h1>Waiting for Player...</h1>
+                    <p class="subtitle">Share this code with your friend:</p>
+                    
+                    <div class="room-code-display">
+                        <div class="room-code" id="room-code-display">CODE</div>
+                    </div>
+                    
+                    <p class="waiting-info">They can join at: <strong>localhost:3000/game.html</strong></p>
+                    
+                    <button id="btn-cancel-waiting" class="btn btn-secondary" type="button">Cancel</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen: Network Game - Join Game -->
+        <section id="screen-join-game" class="game-screen">
+            <div class="container game-container">
+                <div class="setup-card">
+                    <h1>Join a Game</h1>
+                    <p class="subtitle">Enter your name and room code</p>
+                    
+                    <form id="join-game-form">
+                        <div class="form-group">
+                            <label for="guest-name">Your Name:</label>
+                            <input 
+                                type="text" 
+                                id="guest-name" 
+                                placeholder="Enter your name" 
+                                required 
+                                maxlength="20"
+                            />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="room-code-input">Room Code:</label>
+                            <input 
+                                type="text" 
+                                id="room-code-input" 
+                                placeholder="e.g., ABC123" 
+                                required 
+                                maxlength="10"
+                                style="text-transform: uppercase;"
+                            />
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Join Game</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen: Network Game - Playing -->
+        <section id="screen-network-playing" class="game-screen">
+            <div class="container game-container">
+                <div class="game-card">
+                    <div class="network-info">
+                        <div class="player-info">
+                            <span class="current-player" id="network-current-player">You</span>
+                            <span class="round-counter" id="network-round-counter">Round 1 of 10</span>
+                        </div>
+                        <div class="network-status" id="network-status">Connected</div>
+                    </div>
+
+                    <div class="image-container">
+                        <img id="network-gundam-image" src="" alt="Gundam to guess" />
+                    </div>
+
+                    <div class="guess-section">
+                        <p class="hint-text">What Gundam is this?</p>
+                        
+                        <form id="network-guess-form">
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    id="network-guess-input" 
+                                    placeholder="Type the Gundam name..." 
+                                    autocomplete="off"
+                                    maxlength="50"
+                                />
+                                <button type="submit" class="btn btn-primary">Submit Guess</button>
+                            </div>
+                        </form>
+
+                        <div id="network-feedback-area" class="feedback-area hidden">
+                            <div id="network-feedback-message" class="feedback-message"></div>
+                            <div id="network-correct-answer" class="correct-answer hidden">
+                                <p>The correct answer was: <strong id="network-answer-text"></strong></p>
+                            </div>
+                            <button id="network-next-button" class="btn btn-secondary" type="button">Next</button>
+                        </div>
                     </div>
                 </div>
             </div>

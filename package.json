@@ -1,0 +1,16 @@
+{
+  "name": "gundam-guessing-game",
+  "version": "2.0.0",
+  "description": "Gundam Guessing Game with Network Multiplayer",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "python3 -m http.server 8000"
+  },
+  "keywords": ["game", "gundam", "multiplayer", "websocket"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "ws": "^8.14.2"
+  }
+}

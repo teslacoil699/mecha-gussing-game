@@ -3,13 +3,19 @@
 const API_URL = './gundams.json';
 let allGundams = [];
 
+// WebSocket connection for network games
+let ws = null;
+const WS_URL = `ws://${window.location.hostname}:3000`;
+
 // ============================================================================
 // GAME STATE MANAGEMENT
 // ============================================================================
 
 const gameState = {
-    currentScreen: 'modeSelect', // modeSelect | setup | playing | turnBarrier | results | leaderboard
-    gameMode: null, // 'singlePlayer' | 'multiplayer'
+    currentScreen: 'modeSelect', // modeSelect | setup | playing | turnBarrier | results | leaderboard | network-*
+    gameMode: null, // 'singlePlayer' | 'localMultiplayer' | 'networkGame'
+    networkMode: null, // 'host' | 'guest' (for network games)
+    roomCode: null,
     currentPlayer: 'P1',
     players: {
         P1: { name: '', score: 0, currentRound: 0 },
@@ -64,14 +70,64 @@ async function loadGundamsData() {
 function setupEventListeners() {
     // Mode selection buttons
     const btnSinglePlayer = document.querySelector('#btn-single-player');
-    const btnMultiplayer = document.querySelector('#btn-multiplayer');
+    const btnLocalMultiplayer = document.querySelector('#btn-local-multiplayer');
+    const btnNetworkGame = document.querySelector('#btn-network-game');
     
     if (btnSinglePlayer) {
         btnSinglePlayer.addEventListener('click', () => handleModeSelect('singlePlayer'));
     }
     
-    if (btnMultiplayer) {
-        btnMultiplayer.addEventListener('click', () => handleModeSelect('multiplayer'));
+    if (btnLocalMultiplayer) {
+        btnLocalMultiplayer.addEventListener('click', () => handleModeSelect('localMultiplayer'));
+    }
+
+    if (btnNetworkGame) {
+        btnNetworkGame.addEventListener('click', () => handleNetworkGameSelect());
+    }
+
+    // Network game buttons
+    const btnCreateGame = document.querySelector('#btn-create-game');
+    const btnJoinGameForm = document.querySelector('#btn-join-game-form');
+    
+    if (btnCreateGame) {
+        btnCreateGame.addEventListener('click', () => showScreen('createGame'));
+    }
+
+    if (btnJoinGameForm) {
+        btnJoinGameForm.addEventListener('click', () => showScreen('joinGame'));
+    }
+
+    // Network game forms
+    const createGameForm = document.querySelector('#create-game-form');
+    const joinGameForm = document.querySelector('#join-game-form');
+
+    if (createGameForm) {
+        createGameForm.addEventListener('submit', handleCreateGame);
+    }
+
+    if (joinGameForm) {
+        joinGameForm.addEventListener('submit', handleJoinGame);
+    }
+
+    // Cancel waiting button
+    const btnCancelWaiting = document.querySelector('#btn-cancel-waiting');
+    if (btnCancelWaiting) {
+        btnCancelWaiting.addEventListener('click', () => {
+            if (ws) ws.close();
+            showScreen('modeSelect');
+        });
+    }
+
+    // Network guess form
+    const networkGuessForm = document.querySelector('#network-guess-form');
+    if (networkGuessForm) {
+        networkGuessForm.addEventListener('submit', handleNetworkGuessSubmit);
+    }
+
+    // Network next button
+    const networkNextButton = document.querySelector('#network-next-button');
+    if (networkNextButton) {
+        networkNextButton.addEventListener('click', handleNetworkNextRound);
     }
 
     // Setup form
@@ -125,7 +181,7 @@ function showScreen(screenName) {
 }
 
 // ============================================================================
-// SETUP SCREEN - PLAYER NAME ENTRY
+// MODE SELECTION
 // ============================================================================
 
 function handleModeSelect(mode) {
@@ -143,13 +199,19 @@ function handleModeSelect(mode) {
         player2Group.style.display = 'none';
         player2Input.removeAttribute('required');
     } else {
-        setupTitle.textContent = 'Multiplayer Game';
+        setupTitle.textContent = 'Local Multiplayer Game';
         setupSubtitle.textContent = 'Enter both player names';
         player2Group.style.display = 'block';
         player2Input.setAttribute('required', '');
     }
 
     showScreen('setup');
+}
+
+function handleNetworkGameSelect() {
+    gameState.gameMode = 'networkGame';
+    connectWebSocket();
+    showScreen('networkSelect');
 }
 
 function handleSetupSubmit(e) {
@@ -163,7 +225,7 @@ function handleSetupSubmit(e) {
         return;
     }
 
-    if (gameState.gameMode === 'multiplayer' && !p2Name) {
+    if (gameState.gameMode === 'localMultiplayer' && !p2Name) {
         alert('Please enter both player names');
         return;
     }
@@ -174,7 +236,7 @@ function handleSetupSubmit(e) {
     gameState.gameState = 'playing';
     gameState.currentPlayer = 'P1';
     gameState.players.P1.currentRound = 1;
-    gameState.players.P2.currentRound = gameState.gameMode === 'multiplayer' ? 0 : -1;
+    gameState.players.P2.currentRound = gameState.gameMode === 'localMultiplayer' ? 0 : -1;
 
     // Initialize gundam pool
     initializeGundamPool();
@@ -368,7 +430,7 @@ function endGame() {
 
     // Save high scores
     saveHighScore(p1.name, p1.score);
-    if (gameState.gameMode === 'multiplayer') {
+    if (gameState.gameMode === 'localMultiplayer') {
         saveHighScore(p2.name, p2.score);
     }
 
@@ -428,6 +490,319 @@ function handlePlayAgain() {
     initializeGundamPool();
     startNewRound();
     showScreen('playing');
+}
+
+// ============================================================================
+// NETWORK GAME SUPPORT
+// ============================================================================
+
+function connectWebSocket() {
+    ws = new WebSocket(WS_URL);
+
+    ws.onopen = () => {
+        console.log('Connected to game server');
+        updateNetworkStatus('Connected');
+    };
+
+    ws.onmessage = (event) => {
+        try {
+            const message = JSON.parse(event.data);
+            handleWebSocketMessage(message);
+        } catch (error) {
+            console.error('Error parsing WebSocket message:', error);
+        }
+    };
+
+    ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+        updateNetworkStatus('Connection Error');
+        alert('Failed to connect to game server. Make sure the server is running on port 3000.');
+        showScreen('modeSelect');
+    };
+
+    ws.onclose = () => {
+        console.log('Disconnected from game server');
+        updateNetworkStatus('Disconnected');
+    };
+}
+
+function updateNetworkStatus(status) {
+    const statusEl = document.querySelector('#network-status');
+    if (statusEl) {
+        statusEl.textContent = status;
+        statusEl.classList.toggle('disconnected', status !== 'Connected');
+    }
+}
+
+function handleWebSocketMessage(message) {
+    switch (message.type) {
+        case 'gameCreated':
+            handleGameCreated(message);
+            break;
+        case 'gameJoined':
+            handleGameJoined(message);
+            break;
+        case 'playerJoined':
+            handlePlayerJoined(message);
+            break;
+        case 'gameStarted':
+            handleGameStartedMessage(message);
+            break;
+        case 'opponentGuessed':
+            handleOpponentGuessed(message);
+            break;
+        case 'roundUpdated':
+            handleRoundUpdated(message);
+            break;
+        case 'playerDisconnected':
+            alert(message.message);
+            showScreen('modeSelect');
+            break;
+        case 'error':
+            alert('Error: ' + message.message);
+            showScreen('networkSelect');
+            break;
+    }
+}
+
+function handleCreateGame(e) {
+    e.preventDefault();
+    const hostName = document.querySelector('#host-name').value.trim();
+
+    if (!hostName) {
+        alert('Please enter your name');
+        return;
+    }
+
+    gameState.networkMode = 'host';
+    gameState.players.P1.name = hostName;
+
+    ws.send(JSON.stringify({
+        type: 'createGame',
+        playerName: hostName
+    }));
+}
+
+function handleGameCreated(message) {
+    gameState.roomCode = message.roomCode;
+    document.querySelector('#room-code-display').textContent = gameState.roomCode;
+    showScreen('waitingPlayer');
+}
+
+function handleJoinGame(e) {
+    e.preventDefault();
+    const guestName = document.querySelector('#guest-name').value.trim();
+    const roomCode = document.querySelector('#room-code-input').value.trim().toUpperCase();
+
+    if (!guestName || !roomCode) {
+        alert('Please enter both your name and the room code');
+        return;
+    }
+
+    gameState.networkMode = 'guest';
+    gameState.players.P2.name = guestName;
+    gameState.roomCode = roomCode;
+
+    ws.send(JSON.stringify({
+        type: 'joinGame',
+        roomCode: roomCode,
+        playerName: guestName
+    }));
+}
+
+function handleGameJoined(message) {
+    gameState.players.P1.name = message.hostName;
+    alert(`Connected to ${message.hostName}'s game!`);
+    // Wait for host to start the game
+}
+
+function handlePlayerJoined(message) {
+    gameState.players.P2.name = message.guestName;
+    alert(`${message.guestName} has joined your game!`);
+    
+    // Auto-start the game for the host
+    startNetworkGame();
+}
+
+function startNetworkGame() {
+    gameState.gameState = 'playing';
+    gameState.currentPlayer = 'P1';
+    gameState.players.P1.currentRound = 1;
+    gameState.players.P2.currentRound = 0;
+
+    initializeGundamPool();
+    startNewNetworkRound();
+
+    ws.send(JSON.stringify({
+        type: 'startGame',
+        gameState: gameState
+    }));
+}
+
+function startNewNetworkRound() {
+    gameState.hasGuessed = false;
+    gameState.currentGundam = getNextGundam();
+
+    const gundamImage = document.querySelector('#network-gundam-image');
+    if (gundamImage && gameState.currentGundam) {
+        gundamImage.src = gameState.currentGundam.image || 'https://placehold.co/600x400/111a27/ffffff?text=No+Image';
+    }
+
+    const guessInput = document.querySelector('#network-guess-input');
+    if (guessInput) {
+        guessInput.value = '';
+        guessInput.disabled = false;
+        guessInput.focus();
+    }
+
+    const feedbackArea = document.querySelector('#network-feedback-area');
+    if (feedbackArea) {
+        feedbackArea.classList.add('hidden');
+    }
+
+    updateNetworkPlayingUI();
+    showScreen('networkPlaying');
+}
+
+function updateNetworkPlayingUI() {
+    const p1Data = gameState.players.P1;
+    const p2Data = gameState.players.P2;
+
+    document.querySelector('#network-current-player').textContent = 
+        gameState.networkMode === 'host' ? p1Data.name : p2Data.name;
+    
+    document.querySelector('#network-round-counter').textContent = 
+        gameState.networkMode === 'host' ? 
+        `Round ${p1Data.currentRound} of ${gameState.totalRounds}` : 
+        `Round ${p2Data.currentRound} of ${gameState.totalRounds}`;
+}
+
+function handleGameStartedMessage(message) {
+    gameState.gameState = 'playing';
+    startNewNetworkRound();
+}
+
+function handleNetworkGuessSubmit(e) {
+    e.preventDefault();
+
+    if (gameState.hasGuessed || !gameState.currentGundam) return;
+
+    const guessInput = document.querySelector('#network-guess-input');
+    const playerGuess = guessInput.value.trim();
+
+    if (!playerGuess) {
+        alert('Please enter a guess');
+        return;
+    }
+
+    const isCorrect = validateGuess(playerGuess, gameState.currentGundam.name);
+
+    if (isCorrect) {
+        if (gameState.networkMode === 'host') {
+            gameState.players.P1.score += 1;
+        } else {
+            gameState.players.P2.score += 1;
+        }
+    }
+
+    gameState.hasGuessed = true;
+
+    const feedbackArea = document.querySelector('#network-feedback-area');
+    const feedbackMessage = document.querySelector('#network-feedback-message');
+    const correctAnswerDiv = document.querySelector('#network-correct-answer');
+    const answerText = document.querySelector('#network-answer-text');
+
+    feedbackArea.classList.remove('hidden');
+    guessInput.disabled = true;
+
+    if (isCorrect) {
+        feedbackMessage.textContent = '✅ Correct!';
+        feedbackMessage.className = 'feedback-message correct';
+        correctAnswerDiv.classList.add('hidden');
+    } else {
+        feedbackMessage.textContent = '❌ Incorrect';
+        feedbackMessage.className = 'feedback-message incorrect';
+        correctAnswerDiv.classList.remove('hidden');
+        answerText.textContent = gameState.currentGundam.name;
+    }
+
+    // Send guess to other player
+    ws.send(JSON.stringify({
+        type: 'submitGuess',
+        guess: playerGuess,
+        isCorrect: isCorrect,
+        correctAnswer: gameState.currentGundam.name
+    }));
+}
+
+function handleOpponentGuessed(message) {
+    const opponentName = message.playerId === 'host' ? gameState.players.P1.name : gameState.players.P2.name;
+    console.log(`${opponentName} guessed: ${message.guess} - ${message.isCorrect ? 'Correct' : 'Incorrect'}`);
+}
+
+function handleNetworkNextRound() {
+    const p1 = gameState.players.P1;
+    const p2 = gameState.players.P2;
+
+    if (gameState.networkMode === 'host') {
+        p1.currentRound += 1;
+
+        if (p1.currentRound > gameState.totalRounds) {
+            // Host finished, notify guest
+            ws.send(JSON.stringify({
+                type: 'nextRound',
+                gameState: gameState
+            }));
+            // Switch to guest turn
+            gameState.currentPlayer = 'P2';
+            p2.currentRound = 1;
+            startNewNetworkRound();
+        } else {
+            startNewNetworkRound();
+        }
+    } else {
+        p2.currentRound += 1;
+
+        if (p2.currentRound > gameState.totalRounds) {
+            // Guest finished, game over
+            ws.send(JSON.stringify({
+                type: 'nextRound',
+                gameState: gameState
+            }));
+            endNetworkGame();
+        } else {
+            startNewNetworkRound();
+        }
+    }
+}
+
+function handleRoundUpdated(message) {
+    // Update local game state with synced state from server
+    gameState.gameState = message.gameState.gameState;
+    gameState.players = message.gameState.players;
+    
+    const p2 = gameState.players.P2;
+    if (p2.currentRound > gameState.totalRounds) {
+        endNetworkGame();
+    } else if (gameState.networkMode === 'guest' && gameState.currentPlayer === 'P1' && p2.currentRound === 1) {
+        // Now it's guest's turn
+        gameState.currentPlayer = 'P2';
+        startNewNetworkRound();
+    }
+}
+
+function endNetworkGame() {
+    const p1 = gameState.players.P1;
+    const p2 = gameState.players.P2;
+
+    // Save high scores
+    saveHighScore(p1.name, p1.score);
+    saveHighScore(p2.name, p2.score);
+
+    showResults(p1, p2);
+    showScreen('results');
+    
+    if (ws) ws.close();
 }
 
 // ============================================================================
