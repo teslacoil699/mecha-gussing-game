@@ -1,0 +1,486 @@
+/* Game-specific Stylesheet */
+
+.game-screen {
+    display: none;
+    padding: 2rem 0;
+    min-height: 60vh;
+}
+
+.game-screen.active {
+    display: block;
+}
+
+.game-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+}
+
+/* ============================================================================
+   SETUP SCREEN - PLAYER NAME ENTRY
+   ============================================================================ */
+
+.setup-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 3rem;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.setup-card h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.setup-card .subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.form-group input:focus {
+    border-color: rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.setup-card .btn {
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* ============================================================================
+   PLAYING SCREEN
+   ============================================================================ */
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+}
+
+.player-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.current-player {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.round-counter {
+    font-size: 0.9rem;
+    color: var(--muted);
+}
+
+.score-display {
+    display: flex;
+    gap: 2rem;
+}
+
+.score-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.score-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.score-value {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--accent-2);
+}
+
+.game-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    overflow: hidden;
+    padding: 2rem;
+}
+
+.image-container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    border-radius: 20px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 400px;
+    object-fit: contain;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.guess-section {
+    text-align: center;
+}
+
+.hint-text {
+    font-size: 1.2rem;
+    color: var(--text);
+    margin-bottom: 1.5rem;
+}
+
+.input-group {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.input-group input {
+    flex: 1;
+    padding: 0.95rem 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.input-group input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.input-group input:focus {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.input-group input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.input-group button {
+    min-width: 120px;
+}
+
+.feedback-area {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    animation: slideIn 0.3s ease;
+}
+
+.feedback-area.hidden {
+    display: none;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feedback-message {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.feedback-message.correct {
+    color: #2ecc71;
+}
+
+.feedback-message.incorrect {
+    color: var(--accent);
+}
+
+.correct-answer {
+    margin: 1rem 0;
+    padding: 1rem;
+    background: rgba(231, 76, 60, 0.1);
+    border-left: 3px solid var(--accent);
+    border-radius: 8px;
+}
+
+.correct-answer.hidden {
+    display: none;
+}
+
+.correct-answer p {
+    color: var(--text);
+    margin: 0;
+}
+
+.correct-answer strong {
+    color: var(--accent-2);
+}
+
+.feedback-area .btn {
+    margin-top: 1rem;
+}
+
+/* ============================================================================
+   TURN BARRIER SCREEN
+   ============================================================================ */
+
+.turn-barrier-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    max-width: 500px;
+    width: 100%;
+    text-align: center;
+}
+
+.turn-barrier-card h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.turn-barrier-subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.turn-barrier-card .btn {
+    width: 100%;
+}
+
+/* ============================================================================
+   RESULTS SCREEN
+   ============================================================================ */
+
+.results-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 3rem 2rem;
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+}
+
+.results-card h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.results-subtitle {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 2rem;
+}
+
+.results-scores {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.result-item {
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    transition: transform 0.2s ease;
+}
+
+.result-item.winner {
+    background: rgba(74, 144, 226, 0.15);
+    border-color: var(--accent-2);
+    transform: scale(1.05);
+}
+
+.result-item h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+}
+
+.result-score {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-2);
+}
+
+.winner-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.results-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.results-actions .btn {
+    width: 100%;
+}
+
+/* ============================================================================
+   LEADERBOARD SCREEN
+   ============================================================================ */
+
+.leaderboard-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 28px;
+    padding: 2rem;
+    max-width: 700px;
+    width: 100%;
+}
+
+.leaderboard-card h1 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+.leaderboard-table thead {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+}
+
+.leaderboard-table th {
+    padding: 1rem;
+    text-align: left;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+}
+
+.leaderboard-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    color: var(--text);
+}
+
+.leaderboard-table td.score {
+    font-weight: 700;
+    color: var(--accent-2);
+}
+
+.leaderboard-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.leaderboard-actions {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.leaderboard-actions .btn {
+    flex: 1;
+    max-width: 200px;
+}
+
+/* ============================================================================
+   RESPONSIVE DESIGN
+   ============================================================================ */
+
+@media (max-width: 768px) {
+    .game-header {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .score-display {
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .results-scores {
+        grid-template-columns: 1fr;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    .input-group button {
+        width: 100%;
+    }
+
+    .game-card {
+        padding: 1.5rem;
+    }
+
+    .setup-card {
+        padding: 2rem 1.5rem;
+    }
+}

@@ -80,6 +80,11 @@ img {
   color: var(--text);
 }
 
+.main-nav a.nav-game-link {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .hero-section {
   position: relative;
   min-height: 72vh;
@@ -126,6 +131,16 @@ img {
   color: var(--muted);
   margin-bottom: 2rem;
   line-height: 1.9;
+}
+
+.hero-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero-buttons .btn {
+  display: inline-flex;
 }
 
 .btn {

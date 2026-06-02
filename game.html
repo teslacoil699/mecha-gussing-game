@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gundam Guessing Game</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%23112134'/%3E%3Ctext x='50%25' y='55%25' font-size='36' text-anchor='middle' fill='%23ffffff' font-family='sans-serif'%3EG%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="game-style.css" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="index.html">GUNDAM HUB</a>
+            <nav class="main-nav">
+                <a href="index.html">Home</a>
+                <a href="game.html" class="active">Play Game</a>
+                <a href="index.html#featured">Mobile Suits</a>
+                <a href="index.html#gallery">Gallery</a>
+                <a href="index.html#about">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Screen 1: Player Name Entry -->
+        <section id="screen-setup" class="game-screen active">
+            <div class="container game-container">
+                <div class="setup-card">
+                    <h1>Gundam Guessing Game</h1>
+                    <p class="subtitle">Enter player names to begin</p>
+                    
+                    <form id="setup-form">
+                        <div class="form-group">
+                            <label for="player1-name">Player 1 Name:</label>
+                            <input 
+                                type="text" 
+                                id="player1-name" 
+                                placeholder="Enter your name" 
+                                required 
+                                maxlength="20"
+                            />
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="player2-name">Player 2 Name:</label>
+                            <input 
+                                type="text" 
+                                id="player2-name" 
+                                placeholder="Enter your name" 
+                                required 
+                                maxlength="20"
+                            />
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary">Start Game</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 2: Playing Round -->
+        <section id="screen-playing" class="game-screen">
+            <div class="container game-container">
+                <div class="game-header">
+                    <div class="player-info">
+                        <span class="current-player" id="current-player-name">Player 1</span>
+                        <span class="round-counter" id="round-counter">Round 1 of 10</span>
+                    </div>
+                    <div class="score-display">
+                        <div class="score-item">
+                            <span class="score-label" id="p1-label">Player 1</span>
+                            <span class="score-value" id="p1-score">0</span>
+                        </div>
+                        <div class="score-item">
+                            <span class="score-label" id="p2-label">Player 2</span>
+                            <span class="score-value" id="p2-score">0</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-card">
+                    <div class="image-container">
+                        <img id="gundam-image" src="" alt="Gundam to guess" />
+                    </div>
+
+                    <div class="guess-section">
+                        <p class="hint-text">What Gundam is this?</p>
+                        
+                        <form id="guess-form">
+                            <div class="input-group">
+                                <input 
+                                    type="text" 
+                                    id="guess-input" 
+                                    placeholder="Type the Gundam name..." 
+                                    autocomplete="off"
+                                    maxlength="50"
+                                />
+                                <button type="submit" class="btn btn-primary">Submit Guess</button>
+                            </div>
+                        </form>
+
+                        <div id="feedback-area" class="feedback-area hidden">
+                            <div id="feedback-message" class="feedback-message"></div>
+                            <div id="correct-answer" class="correct-answer hidden">
+                                <p>The correct answer was: <strong id="answer-text"></strong></p>
+                            </div>
+                            <button id="next-button" class="btn btn-secondary" type="button">Next</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 3: Player Switch Turn Barrier -->
+        <section id="screen-turn-barrier" class="game-screen">
+            <div class="container game-container">
+                <div class="turn-barrier-card">
+                    <h2 id="turn-barrier-message">Player 2's Turn</h2>
+                    <p class="turn-barrier-subtitle">Player 1, please step away from the screen</p>
+                    <button id="turn-barrier-button" class="btn btn-primary" type="button">I'm Ready to Play</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screen 4: Game Over Results -->
+        <section id="screen-results" class="game-screen">
+            <div class="container game-container">
+                <div class="results-card">
+                    <h1>Game Over!</h1>
+                    <p class="results-subtitle">Final Scores</p>
+
+                    <div class="results-scores">
+                        <div class="result-item" id="result-p1">
+                            <h3 id="result-p1-name">Player 1</h3>
+                            <div class="result-score" id="result-p1-score">0</div>
+                        </div>
+                        <div class="result-item winner" id="result-winner">
+                            <span class="winner-badge">Winner</span>
+                        </div>
+                        <div class="result-item" id="result-p2">
+                            <h3 id="result-p2-name">Player 2</h3>
+                            <div class="result-score" id="result-p2-score">0</div>
+                        </div>
+                    </div>
+
+                    <div class="results-actions">
+                        <button id="play-again-btn" class="btn btn-primary" type="button">Play Again</button>
+                        <a href="index.html#featured" class="btn btn-secondary">View Leaderboard</a>
+                        <a href="index.html" class="btn btn-secondary">Back to Hub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Leaderboard Section -->
+        <section id="screen-leaderboard" class="game-screen">
+            <div class="container game-container">
+                <div class="leaderboard-card">
+                    <h1>High Scores</h1>
+                    <table class="leaderboard-table">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player Name</th>
+                                <th>Score</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leaderboard-body">
+                            <!-- Populated by JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="leaderboard-actions">
+                        <a href="game.html" class="btn btn-primary">Play Game</a>
+                        <a href="index.html" class="btn btn-secondary">Back to Hub</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div>
+                <h3>Contact</h3>
+                <p>hello@gundamhub.com</p>
+            </div>
+            <div>
+                <h3>Social</h3>
+                <p>Twitter | Instagram | YouTube</p>
+            </div>
+            <div>
+                <h3>Credits</h3>
+                <p>Gundam is a registered trademark of Sunrise Studio</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="game.js"></script>
+</body>
+</html>
