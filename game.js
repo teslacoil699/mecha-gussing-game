@@ -218,10 +218,11 @@ function startNewRound() {
         gundamImage.alt = gameState.currentGundam.name || 'Gundam';
     }
 
-    // Clear input
+    // Clear input and re-enable for next guess
     const guessInput = document.querySelector('#guess-input');
     if (guessInput) {
         guessInput.value = '';
+        guessInput.disabled = false;
         guessInput.focus();
     }
 
